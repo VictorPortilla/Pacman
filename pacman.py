@@ -106,6 +106,50 @@ def world():
                 path.goto(x + 10, y + 10)
                 path.dot(2, 'white')
 
+def relativePos(ghostPos):
+    """Calculates the relative position between a ghost and pacman"""
+    options = []
+    allOptions = [
+        vector(5, 0),
+        vector(-5, 0),
+        vector(0, 5),
+        vector(0, -5)
+    ]
+
+    if(pacman.x > ghostPos.x):
+        options.append(vector(5, 0))
+    else:
+        options.append(vector(-5, 0))
+
+
+    if(pacman.y > ghostPos.y):
+        options.append(vector(0, 5))
+    else:
+        options.append(vector(0, -5))
+
+    if(not(valid(ghostPos + options[0]) or valid(ghostPos + options[1]))):
+        print("for ghost: " + (str)(ghostPos))
+        print("option1: " + (str)(options[0]))
+        print("option2: " + (str)(options[1]))
+        
+        allOptions.remove(options[0])
+        allOptions.remove(options[1])
+        return allOptions
+
+    if(pacman.x == ghostPos.x):
+        if(valid(ghostPos + options[1])):
+            options.pop(0)
+        else:
+            options.pop(1)
+
+    if(pacman.y == ghostPos.y):
+        if(valid(ghostPos + options[0])):
+            options.pop(1)
+        else:
+            options.pop(0)
+
+    return options
+
 
 def move():
     """Move pacman and all ghosts."""
@@ -134,12 +178,7 @@ def move():
         if valid(point + course):
             point.move(course)
         else:
-            options = [
-                vector(5, 0),
-                vector(-5, 0),
-                vector(0, 5),
-                vector(0, -5),
-            ]
+            options = relativePos(point)
             plan = choice(options)
             course.x = plan.x
             course.y = plan.y
