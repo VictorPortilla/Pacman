@@ -22,6 +22,7 @@ path = Turtle(visible=False)
 writer = Turtle(visible=False)
 aim = vector(5, 0)
 pacman = vector(-40, -80)
+#All ghost velocity was aumented from 5 to 10
 ghosts = [
     [vector(-180, 160), vector(10, 0)],
     [vector(-180, -160), vector(0, 10)],
@@ -138,6 +139,7 @@ def world():
 
 def relativePos(ghostPos):
     """Calculates the relative position between a ghost and pacman"""
+    #All ghost velocity was aumented from 5 to 10
     options = []
     allOptions = [
         vector(10, 0),
@@ -157,6 +159,8 @@ def relativePos(ghostPos):
     else:
         options.append(vector(0, -10))
 
+    #if the ghost cant get closer to the player (mainly because it's stuck in a corner),
+    #it takes the remaining options
     if(not(valid(ghostPos + options[0]) or valid(ghostPos + options[1]))):
         print("for ghost: " + (str)(ghostPos))
         print("option1: " + (str)(options[0]))
